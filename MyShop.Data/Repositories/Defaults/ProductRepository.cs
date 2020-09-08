@@ -18,12 +18,18 @@ namespace MyShop.Data.Repositories.Defaults
             _db = db;
         }
 
-        public async Task<Product> GetById(int id)
+        public async Task AddAsync(Product product)
+        {
+            await _db.Products.AddAsync(product);
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task<Product> GetByIdAsync(int id)
         {
             return await _db.Products.FirstOrDefaultAsync(x=>x.Id==id);
         }
 
-        public IQueryable GetQuery()
+        public IQueryable<Product> GetQuery()
         {
             return _db.Products.AsQueryable();
         }

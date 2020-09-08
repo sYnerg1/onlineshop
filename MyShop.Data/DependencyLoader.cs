@@ -15,6 +15,9 @@ namespace MyShop.Data
         public static void Load(IServiceCollection services)
         {
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IShopCartItemRepository, ShopCartItemRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
         }
     }
 }

@@ -11,6 +11,8 @@ namespace MyShop.Data.Models
 
         public List<ShopCartItem> Items;
 
+        public ShopUser User { get; set; }
+
         public ShopCart()
         {
             Items = new List<ShopCartItem>();

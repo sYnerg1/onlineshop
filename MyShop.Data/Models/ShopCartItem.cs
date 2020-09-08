@@ -12,5 +12,8 @@ namespace MyShop.Data.Models
 
         public Product Product { get; set; }
         public int ProductId { get; set; }
+
+        public ShopCart ShopCart { get; set; }
+        public int ShopCartId { get; set; }
     }
 }

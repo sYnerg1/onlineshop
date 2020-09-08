@@ -39,5 +39,6 @@ namespace MyShop.Data.Repositories.Defaults
         {
             return await _userManager.FindByNameAsync(userName);
         }
+
     }
 }

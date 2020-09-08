@@ -9,7 +9,8 @@ namespace MyShop.Data.Repositories
 {
     public interface IProductRepository
     {
-        Task<Product> GetById(int id);
-        IQueryable GetQuery();
+        Task<Product> GetByIdAsync(int id);
+        Task AddAsync(Product product);
+        IQueryable<Product> GetQuery();
     }
 }

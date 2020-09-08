@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MyShop.Api</name>
+    </assembly>
+    <members>
+        <member name="M:MyShop.Api.Controllers.AccountController.Registration(MyShop.Domain.Models.ShopUserDTO)">
+             <summary>
+             Register new User.
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 api\Registration
+                   {
+                    "username" : "testlogin"
+                    "password": "Testpass",
+                    }
+             </remarks>
+             <response code="201">User registered</response> 
+             <response code="400">Bad request</response> 
+        </member>
+        <member name="M:MyShop.Api.Controllers.AccountController.Login(MyShop.Domain.Models.ShopUserDTO)">
+             <summary>
+             Login and get JWT.
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 api\Login
+                   {
+                    "username" : "testlogin"
+                    "password": "Testpassword",
+                    }
+             </remarks>
+             <response code="200">New istance of JWT</response> 
+             <response code="400">Invalid login or password</response> 
+        </member>
+        <member name="M:MyShop.Controllers.ProductsController.Post(MyShop.Domain.Models.AddProductDTO)">
+            <summary>
+            Add new product.
+            </summary>
+            <response code="201">Product added</response> 
+            <response code="400">If image is null</response> 
+            <response code="401">If JWT isn't correct</response> 
+            <response code="500">Data base error</response> 
+        </member>
+    </members>
+</doc>
