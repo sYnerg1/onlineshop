@@ -63,6 +63,7 @@ namespace MyShop.Data.Repositories.Defaults
         public async Task<IEnumerable<ShopCartItem>> Find(Expression<Func<ShopCartItem, bool>> predicate)
         {
             var result = await _db.ShopCartItems
+                .Include(x=>x.Product)
                 .Where(predicate)
                 .ToListAsync();
 

@@ -29,9 +29,9 @@ namespace MyShop.Api.Controllers
         {
             try
             {
-                var currentUserName = User.Identity.Name;
+                int shopCartId = int.Parse(User.Claims.FirstOrDefault(x=>x.Type=="ShopCartId").Value);
 
-                var result = await _shopCart.AddToCartAsync(id, currentUserName);
+                var result = await _shopCart.AddToCartAsync(id, shopCartId);
 
                 return Ok(result);
             }
@@ -46,9 +46,9 @@ namespace MyShop.Api.Controllers
         {
             try
             {
-                var currentUserName = User.Identity.Name;
+                int shopCartId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "ShopCartId").Value);
 
-                var result = await _shopCart.GetAllItemsDTOForUserAsync(currentUserName);
+                var result = await _shopCart.GetShopCartForUserAsync(shopCartId);
 
                 return Ok(result);
             }

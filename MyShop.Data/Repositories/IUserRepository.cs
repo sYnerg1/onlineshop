@@ -12,5 +12,7 @@ namespace MyShop.Data.Repositories
         Task<IdentityResult> AddUserAsync(ShopUser value, string password);
         Task<ShopUser> GetUserByUserName(string userName);
         Task<SignInResult> SignInAsync(string userName, string password);
+        Task<IdentityResult> AddToRoleAsync(ShopUser value, string role);
+        Task<IEnumerable<string>> GetUserRoles(ShopUser user);
     }
 }

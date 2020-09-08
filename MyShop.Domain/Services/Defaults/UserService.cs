@@ -58,32 +58,65 @@ namespace MyShop.Domain.Services.Defaults
             return new ShopUserDTO() { UserName = syncaUser.UserName };
         }
 
-        public async Task<object> GetJWT(ShopUserDTO user)
+        public async Task<object> GetJWT(string userName)
         {
-            var tokenTimeCreated = DateTime.UtcNow;
+            ShopUser user = await _users.GetUserByUserName(userName);
 
-            var claims = new List<Claim>
+            if(user!=null)
+            {
+                var tokenTimeCreated = DateTime.UtcNow;
+
+                var userRoles = await _users.GetUserRoles(user);
+
+                var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.UserName)
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim("ShopCartId", user.ShopCartId.ToString())
                 };
 
-            string secretKey = _jwtOptions.Value.Key;
-            int expires = _jwtOptions.Value.Expires;
+                foreach (string role in userRoles)
+                {
+                  claims.Add(new Claim(ClaimTypes.Role, role));
+                }
 
-            var jwt = new JwtSecurityToken(
-                    issuer: "Me",
-                    audience: "My Api",
-                    notBefore: tokenTimeCreated,
-                    claims: claims,
-                    expires: tokenTimeCreated.AddMinutes(expires),
-                    signingCredentials: new SigningCredentials(new SymmetricSecurityKey(
-                        Encoding.ASCII.GetBytes(secretKey)),
-                        SecurityAlgorithms.HmacSha256));
+                string secretKey = _jwtOptions.Value.Key;
+                int expires = _jwtOptions.Value.Expires;
 
-            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+                var jwt = new JwtSecurityToken(
+                        issuer: "Me",
+                        audience: "My Api",
+                        notBefore: tokenTimeCreated,
+                        claims: claims,
+                        expires: tokenTimeCreated.AddMinutes(expires),
+                        signingCredentials: new SigningCredentials(new SymmetricSecurityKey(
+                            Encoding.ASCII.GetBytes(secretKey)),
+                            SecurityAlgorithms.HmacSha256));
 
-            return encodedJwt;
+                var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+                return encodedJwt;
+            }
+            else
+            {
+                throw new ArgumentNullException();
+            }
+           
         }
 
+        public async Task<IdentityResult> AddToRoleAsyc(ShopUserDTO user, string role="User")
+        {          
+           var existUser = await _users.GetUserByUserName(user.UserName);
+
+            IdentityResult result;
+
+            if (existUser != null)
+            {
+                return result = await _users.AddToRoleAsync(existUser, role);
+            }
+            else
+            {
+                throw new ArgumentNullException();
+            }           
+        }
     }
 }

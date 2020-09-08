@@ -15,7 +15,10 @@ namespace MyShop.Domain.Mapper
             CreateMap<ProductDTO, Product>();
             CreateMap<Product, ProductDTO>();
 
-            CreateMap<ShopCartItem, ShopCartItemDTO>();
+            CreateMap<ShopCartItem, ShopCartItemDTO>()
+                .ForMember(x => x.ProductName, x => x.MapFrom(y =>y.Product.Name))
+                .ForMember(x => x.Price, x => x.MapFrom(y => y.Product.Price));
+
             CreateMap<ShopCartItemDTO, ShopCartItem>();
 
             CreateMap<OrderDetailDTO, OrderDetail>();

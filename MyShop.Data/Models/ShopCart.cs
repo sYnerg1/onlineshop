@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyShop.Data.Models
@@ -17,6 +18,7 @@ namespace MyShop.Data.Models
         {
             Items = new List<ShopCartItem>();
         }
- 
+
+        public decimal TotalCost { get; set; }
     }
 }

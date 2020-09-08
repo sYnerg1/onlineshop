@@ -29,8 +29,8 @@ namespace MyShop.Data.Repositories.Defaults
         public async Task<IEnumerable<Order>> GetAllOrdersForPersonAsync(string userName)
         {
             var result =  await _db.Orders
-                .Include(x => x.User)
                 .Include(x=>x.Details)
+                     .ThenInclude(x=>x.Product)
                 .Where(x => x.User.UserName == userName)
                 .ToListAsync();
 

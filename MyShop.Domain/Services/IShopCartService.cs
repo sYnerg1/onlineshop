@@ -9,9 +9,8 @@ namespace MyShop.Domain.Services
 {
     public interface IShopCartService
     {
-        Task<bool> AddToCartAsync(int productId, string userName);
-        Task<IEnumerable<ShopCartItemDTO>> GetAllItemsDTOForUserAsync(string userName);
-        Task<IEnumerable<ShopCartItem>> GetAllItemsForUserAsync(string userName);
+        Task<bool> AddToCartAsync(int productId, int shopCartId);
+        Task<ShopCartDTO> GetShopCartForUserAsync(int shopCartId);
         Task<bool> DeleteCartItemsAsync(IEnumerable<ShopCartItem> shopCartItems);
     }
 }

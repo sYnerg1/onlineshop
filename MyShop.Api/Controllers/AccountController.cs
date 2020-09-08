@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MyShop.Domain.Models;
 using MyShop.Domain.Services;
@@ -15,10 +16,12 @@ namespace MyShop.Api.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IUserService _users;
+        RoleManager<IdentityRole> _roles;
 
-        public AccountController( IUserService users)
+        public AccountController( IUserService users, RoleManager<IdentityRole> roles)
         {
             _users = users;
+            _roles = roles;
         }
 
         /// <summary>
@@ -47,8 +50,20 @@ namespace MyShop.Api.Controllers
 
             try
             {
-                var result = await _users.CreateUser(user);
-                return StatusCode(201, result.ToString());
+                var createResult = await _users.CreateUser(user);
+
+                if(!createResult.Succeeded)
+                {
+                    return BadRequest();
+                }
+
+                var roleResult = await _users.AddToRoleAsyc(user);
+
+                if (!roleResult.Succeeded)
+                {
+                    return BadRequest();
+                }
+                return StatusCode(201);
             }
             catch (Exception ex)
             {
@@ -73,21 +88,14 @@ namespace MyShop.Api.Controllers
         [HttpPost("Login")]
         public async Task<object> Login(ShopUserDTO model)
         {
-            ShopUserDTO dto = new ShopUserDTO()
-            {
-                UserName = model.UserName,
-                Password = model.Password
-            };
-
             try
             {
-                var result = await _users.SignIn(dto);
+               var result = await _users.SignIn(model);
 
                 if (result.Succeeded)
                 {
-                    var user = await _users.FindUserByName(dto.UserName);
 
-                    var jwtToken = await  _users.GetJWT(user);
+                    var jwtToken = await  _users.GetJWT(model.UserName);
 
                     return Ok(jwtToken);
                 }

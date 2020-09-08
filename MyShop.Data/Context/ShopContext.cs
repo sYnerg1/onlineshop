@@ -16,7 +16,6 @@ namespace MyShop.Data.Context
         public DbSet<ShopCart> ShopCarts { get; set; }
         public DbSet<ShopCartItem> ShopCartItems { get; set; }
 
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             List<Product> a = new List<Product>();

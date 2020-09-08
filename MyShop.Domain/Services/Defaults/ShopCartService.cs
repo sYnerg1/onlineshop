@@ -23,13 +23,10 @@ namespace MyShop.Domain.Services.Defaults
             _mapper = mapper;
         }
 
-        public async Task<bool> AddToCartAsync(int productId,string userName)
+        public async Task<bool> AddToCartAsync(int productId,int shopCartId)
         {
-            var user = await _users.GetUserByUserName(userName);
 
-            var cartId = user.ShopCartId;
-
-            var item = await _items.FindOne(x=>x.ProductId == productId && x.ShopCartId == cartId);
+            var item = await _items.FindOne(x=>x.ProductId == productId && x.ShopCartId == shopCartId);
 
             bool operationResult = false;
 
@@ -37,7 +34,7 @@ namespace MyShop.Domain.Services.Defaults
             {
                 ShopCartItem newItem = new ShopCartItem()
                {
-                    ShopCartId = cartId,
+                    ShopCartId = shopCartId,
                     ProductId = productId,
                     Quantity = 1
                };
@@ -58,30 +55,19 @@ namespace MyShop.Domain.Services.Defaults
             return result;
         }
 
-        public async Task<IEnumerable<ShopCartItemDTO>> GetAllItemsDTOForUserAsync(string userName)
+        public async Task<ShopCartDTO> GetShopCartForUserAsync(int shopCartId)
         {
-            var user = await _users.GetUserByUserName(userName);
-
-            var cartId = user.ShopCartId;
-
-            var cartItems = await _items.GetAll(cartId);
+            var cartItems = await _items.GetAll(shopCartId);
 
             var cartItemDTOs = _mapper.Map<IEnumerable<ShopCartItem>,IEnumerable<ShopCartItemDTO>>(cartItems);
 
-            return cartItemDTOs;
+            ShopCartDTO shopCartDTO= new ShopCartDTO()
+            {
+                ItemDTOs = cartItemDTOs,
+                TotalCost = cartItemDTOs.Sum(x=>x.Quantity* x.Price)
+            };
 
-        }
-
-        public async Task<IEnumerable<ShopCartItem>> GetAllItemsForUserAsync(string userName)
-        {
-            var user = await _users.GetUserByUserName(userName);
-
-            var cartId = user.ShopCartId;
-
-            var cartItems = await _items.GetAll(cartId);
-
-            return cartItems;
-
+            return shopCartDTO;
         }
     }
 }

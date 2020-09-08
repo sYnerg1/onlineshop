@@ -12,15 +12,15 @@ namespace MyShop.Domain.Services.Defaults
 {
    public  class OrderService : IOrderService
     {
-        private readonly IShopCartService _shopcart;
+        private readonly IShopCartItemRepository _items;
         private readonly IOrderRepository _orders;
         private readonly IMapper _mapper;
         private readonly IUserRepository _users;
 
-        public OrderService(IOrderRepository orders, IShopCartService shopcart, IMapper mapper, IUserRepository users)
+        public OrderService(IOrderRepository orders, IShopCartItemRepository items, IMapper mapper, IUserRepository users)
         {
             _orders = orders;
-            _shopcart = shopcart;
+            _items = items;
             _mapper = mapper;
             _users = users;
         }
@@ -28,8 +28,8 @@ namespace MyShop.Domain.Services.Defaults
         public async Task CreateOrderAsync(string userName)
         {
             var user = await _users.GetUserByUserName(userName);
-                      
-            var allItems =  await _shopcart.GetAllItemsForUserAsync(userName);
+
+            var allItems = await _items.Find(x=>x.ShopCartId == user.ShopCartId);
 
             if (allItems.Count() == 0)
             {
@@ -46,6 +46,7 @@ namespace MyShop.Domain.Services.Defaults
                 newOrder.Details.Add(new OrderDetail()
                 {
                     ProductId = it.ProductId,
+                    TotalCost = it.Product.Price*it.Quantity,
                     Quantity = it.Quantity
                 });
             }
@@ -54,7 +55,7 @@ namespace MyShop.Domain.Services.Defaults
 
            await  _orders.AddOrderAsync(newOrder);
 
-           await _shopcart.DeleteCartItemsAsync(allItems);
+           await _items.DeleteRangeAsync(allItems);
         }
 
         public async Task<IEnumerable<OrderDTO>> GetOrdersForPersonAsync(string userName)
