@@ -15,6 +15,7 @@ namespace MyShop.Data.Repositories
         Task<bool> UpdateAsync(ShopCartItem item);
         Task<IEnumerable<ShopCartItem>> GetAll(int cartId);
         Task<bool> DeleteRangeAsync(IEnumerable<ShopCartItem> items);
+        Task<bool> DeleteAsync(ShopCartItem item);
         Task<IEnumerable<ShopCartItem>> Find(Expression<Func<ShopCartItem, bool>> predicate);
     }
 }

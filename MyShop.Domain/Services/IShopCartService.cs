@@ -11,6 +11,6 @@ namespace MyShop.Domain.Services
     {
         Task<bool> AddToCartAsync(int productId, int shopCartId);
         Task<ShopCartDTO> GetShopCartForUserAsync(int shopCartId);
-        Task<bool> DeleteCartItemsAsync(IEnumerable<ShopCartItem> shopCartItems);
+        Task DeleteCartItemAsync(int itemId);
     }
 }

@@ -33,5 +33,11 @@ namespace MyShop.Data.Repositories.Defaults
         {
             return _db.Products.AsQueryable();
         }
+
+        public async Task UpdateAsync(Product product)
+        {
+            _db.Entry(product).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+        }
     }
 }

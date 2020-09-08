@@ -12,47 +12,67 @@ namespace MyShop.Domain.Services.Defaults
 {
     class ShopCartService : IShopCartService
     {
-        private readonly IUserRepository _users;
+        private readonly IProductRepository _products;
         private readonly IShopCartItemRepository _items;
         private readonly IMapper _mapper;
 
-        public ShopCartService(IUserRepository users, IShopCartItemRepository items, IMapper mapper)
+        public ShopCartService(IProductRepository products, IShopCartItemRepository items, IMapper mapper)
         {
-            _users = users;
+            _products = products;
             _items = items;
             _mapper = mapper;
         }
 
         public async Task<bool> AddToCartAsync(int productId,int shopCartId)
         {
-
-            var item = await _items.FindOne(x=>x.ProductId == productId && x.ShopCartId == shopCartId);
-
             bool operationResult = false;
 
-            if(item==null)
+            var productToAdd = await _products.GetByIdAsync(productId);
+
+            if(productToAdd.Amount > 0)
             {
-                ShopCartItem newItem = new ShopCartItem()
-               {
-                    ShopCartId = shopCartId,
-                    ProductId = productId,
-                    Quantity = 1
-               };
-                operationResult =  await _items.AddAsync(newItem);
+                var item = await _items.FindOne(x => x.ProductId == productId && x.ShopCartId == shopCartId);
+
+                if (item == null)
+                {
+                    ShopCartItem newItem = new ShopCartItem()
+                    {
+                        ShopCartId = shopCartId,
+                        Product = productToAdd,
+                        Quantity = 1
+                    };
+                    operationResult = await _items.AddAsync(newItem);
+                }
+                else
+                {
+                    item.Quantity++;
+                    operationResult = await _items.UpdateAsync(item);
+                }
+                productToAdd.Amount--;
+
+                await _products.UpdateAsync(productToAdd);
             }
-            else
-            {
-                item.Quantity++;
-                operationResult = await _items.UpdateAsync(item);
-            }
+         
             return operationResult;
         }
 
-        public async Task<bool> DeleteCartItemsAsync(IEnumerable<ShopCartItem> shopCartItems)
+        public async Task DeleteCartItemAsync(int itemId)
         {
-            bool result = await _items.DeleteRangeAsync(shopCartItems);
+            var existItem = await _items.FindOne(x=>x.Id==itemId);
+            if(existItem!=null)
+            {
+                var reletadProduct = await _products.GetByIdAsync(existItem.ProductId);
 
-            return result;
+                await _items.DeleteAsync(existItem);
+
+                reletadProduct.Amount += existItem.Quantity;
+
+                await _products.UpdateAsync(reletadProduct);
+            }
+            else
+            {
+                throw new ArgumentNullException("Shop Cart doesn't consist this item");
+            }            
         }
 
         public async Task<ShopCartDTO> GetShopCartForUserAsync(int shopCartId)

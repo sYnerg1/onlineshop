@@ -29,7 +29,7 @@ namespace MyShop.Domain.Services.Defaults
         {            
             Product product = _mapper.Map<AddProductDTO,Product>(productDTO);
 
-            if (productDTO.Photo.Length > 0)
+            if (productDTO.Photo!=null)
             {
                 using (var memoryStream = new MemoryStream())
                 {
@@ -58,6 +58,23 @@ namespace MyShop.Domain.Services.Defaults
             };
 
             return result;
+        }
+
+        public async Task UpdateAsync(int id, AddProductDTO productDTO)
+        {
+
+           Product product =  _mapper.Map<AddProductDTO,Product>(productDTO);
+
+            if (productDTO.Photo != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await productDTO.Photo.CopyToAsync(memoryStream);
+                    product.Image = memoryStream.ToArray();
+                }
+            }
+
+            await _repo.UpdateAsync(product);
         }
     }
 }

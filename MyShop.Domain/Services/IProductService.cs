@@ -11,6 +11,7 @@ namespace MyShop.Domain.Services
     public interface IProductService
     {
         Task AddAsync(AddProductDTO productDTO);
+        Task UpdateAsync(int id, AddProductDTO productDTO);
         Task<PagedProductsDTO> Find(ProductFilterDTO filter);
     }
 }

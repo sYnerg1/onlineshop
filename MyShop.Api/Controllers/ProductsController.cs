@@ -5,6 +5,8 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyShop.Domain.Models;
@@ -15,6 +17,7 @@ namespace MyShop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles ="Admin")]
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _products;
@@ -66,6 +69,29 @@ namespace MyShop.Controllers
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
+        }
+
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] AddProductDTO product)
+        {
+            if(id!=product.Id)
+            {
+                return BadRequest("Id doesn't match");
+            }
+
+            try
+            {
+                 await _products.UpdateAsync(id, product);
+
+                 return Ok(id);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
     }
 }

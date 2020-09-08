@@ -69,5 +69,12 @@ namespace MyShop.Data.Repositories.Defaults
 
             return result;
         }
+
+        public async Task<bool> DeleteAsync(ShopCartItem item)
+        {
+            _db.ShopCartItems.Remove(item);
+
+            return await _db.SaveChangesAsync() > 0;
+        }
     }
 }
