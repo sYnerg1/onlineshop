@@ -16,19 +16,20 @@ namespace MyShop
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                try
-                {
-                    var context = services.GetRequiredService<ShopContext>();
-                    SeedUsersAndRoles.SeedAdminUser(context,services).Wait();
-                }
-                catch(Exception ex)
-                {
+            //using (var scope = host.Services.CreateScope())
+            //{
+            //    var services = scope.ServiceProvider;
+            //    try
+            //    {
+            //        var context = services.GetRequiredService<ShopContext>();
+            //        SeedUsersAndRoles.SeedRoles(context, services).Wait();
+            //        SeedUsersAndRoles.SeedAdmin(context, services).Wait();
+            //    }
+            //    catch(Exception ex)
+            //    {
 
-                }
-            }
+            //    }
+            //}
             host.Run();
         }
 

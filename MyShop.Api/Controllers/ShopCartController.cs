@@ -24,6 +24,15 @@ namespace MyShop.Api.Controllers
             _shopCart = shopCart;
         }
 
+        /// <summary>
+        /// Add nproduct to shop cart by id.
+        /// </summary>
+        /// <response code="201">Product added to shopcart</response> 
+        /// <response code="401">If JWT isn't correct</response> 
+        /// <response code="500">Data base error</response> 
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost("{id}")]
         public async Task<ActionResult> Post(int id)
         {
@@ -33,7 +42,7 @@ namespace MyShop.Api.Controllers
 
                 var result = await _shopCart.AddToCartAsync(id, shopCartId);
 
-                return Ok(result);
+                return StatusCode((int)HttpStatusCode.Created);
             }
             catch(Exception ex)
             {
@@ -41,6 +50,15 @@ namespace MyShop.Api.Controllers
             }    
         }
 
+        /// <summary>
+        /// Add nproduct to shop cart by id.
+        /// </summary>
+        /// <response code="201">Product added to shopcart</response> 
+        /// <response code="401">If JWT isn't correct</response> 
+        /// <response code="500">Data base error</response> 
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet("")]
         public async Task<ActionResult> Get()
         {
@@ -59,6 +77,15 @@ namespace MyShop.Api.Controllers
             
         }
 
+        /// <summary>
+        /// Delete shopcart item by id.
+        /// </summary>
+        /// <response code="201">Item deleted</response> 
+        /// <response code="401">If JWT isn't correct</response> 
+        /// <response code="500">Data base error</response> 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {

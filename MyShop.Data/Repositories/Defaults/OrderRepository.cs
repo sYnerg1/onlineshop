@@ -12,8 +12,6 @@ namespace MyShop.Data.Repositories.Defaults
     public class OrderRepository : IOrderRepository
     {
         private readonly ShopContext _db;
-        private readonly IShopCartItemRepository _cartItems;
-        private readonly IUserRepository _users;
 
         public OrderRepository(ShopContext db)
         {

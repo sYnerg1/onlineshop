@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyShop.Data.Context;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -9,9 +10,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyShop.Data.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    partial class ShopContextModelSnapshot : ModelSnapshot
+    [Migration("20200908214330_Users seed")]
+    partial class Usersseed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,23 +50,16 @@ namespace MyShop.Data.Migrations
                         new
                         {
                             Id = "admin-role-id",
-                            ConcurrencyStamp = "87c8c605-5f8f-49b3-9819-155dc14312ae",
+                            ConcurrencyStamp = "8fe9e775-d5ff-4a07-a4fb-ae32013cb606",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "golduser-role-id",
-                            ConcurrencyStamp = "fe35c736-f66f-4a43-b8a0-4d72d8a24fd6",
+                            ConcurrencyStamp = "871d0127-f973-473f-8017-851ac5cea6d1",
                             Name = "GoldUser",
-                            NormalizedName = "GOLDUSER"
-                        },
-                        new
-                        {
-                            Id = "user-role-id",
-                            ConcurrencyStamp = "6492738a-fbdd-445b-a436-0bdfcc8b0c0f",
-                            Name = "User",
-                            NormalizedName = "USER"
+                            NormalizedName = "GOLDSER"
                         });
                 });
 
@@ -265,37 +260,9 @@ namespace MyShop.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Amount = 24,
-                            Name = "Meat",
-                            Price = 12.3m
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Amount = 24,
-                            Name = "Water",
-                            Price = 4.5m
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Amount = 24,
-                            Name = "Bread",
-                            Price = 9m
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Amount = 24,
-                            Name = "Cake",
-                            Price = 2.41m
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Amount = 2,
-                            Name = "Bottle",
-                            Price = 31.3m
+                            Amount = 0,
+                            Name = "Test",
+                            Price = 0m
                         });
                 });
 
@@ -425,13 +392,13 @@ namespace MyShop.Data.Migrations
                         {
                             Id = "admin-id",
                             AccessFailedCount = 10,
-                            ConcurrencyStamp = "cf2f59a0-58aa-492d-a243-0ba0726bf791",
+                            ConcurrencyStamp = "35a4af18-fef4-4214-9bc1-815ed2ddc792",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOihzc/DbMbuSqcnJexJ4g/+ltnCJ7/BlwtE7BtqnXqhPReLSzjEKkStC46Xi1JOYQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEM9a6sVPh4xbmqpm+nRJkU73acddJ/7DgO8nDx7Jw2oB3Aj77Qkyh5NbGGCS9U8m4Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "819cb1aa-46b8-43ec-8d10-3b659c018f88",
+                            SecurityStamp = "9d6ee28e-0130-4c32-9bd3-9fcd9e5aa2f3",
                             ShopCartId = 33,
                             TwoFactorEnabled = false,
                             UserName = "admin"
@@ -440,13 +407,13 @@ namespace MyShop.Data.Migrations
                         {
                             Id = "golduser-id",
                             AccessFailedCount = 10,
-                            ConcurrencyStamp = "d6586837-49d1-4de6-bb63-47bc5238c2dc",
+                            ConcurrencyStamp = "316e937f-42ea-45ef-9131-085a2804c8f4",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "GOLDUSER",
-                            PasswordHash = "AQAAAAEAACcQAAAAEL9zvceNHiYv/HXgRNSR6SI+Tn9Q7U6Yp9C6nSsEZRW1XxdVEazxorflMcYyLrlYng==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENgxtYzFg8Lz1pkCkpEVHabTrnlDvp5e04RBSn4rIbYFUpciU9kqHXL5yKZJZhtJcw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d1b9656e-317e-445b-a617-5e760ad7e606",
+                            SecurityStamp = "43297686-0e08-465b-a445-7062d4e78d20",
                             ShopCartId = 34,
                             TwoFactorEnabled = false,
                             UserName = "golduser"
@@ -535,7 +502,7 @@ namespace MyShop.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("MyShop.Data.Models.ShopCart", "ShopCart")
-                        .WithMany("Items")
+                        .WithMany()
                         .HasForeignKey("ShopCartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

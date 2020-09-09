@@ -16,12 +16,10 @@ namespace MyShop.Api.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IUserService _users;
-        RoleManager<IdentityRole> _roles;
 
-        public AccountController( IUserService users, RoleManager<IdentityRole> roles)
+        public AccountController( IUserService users)
         {
             _users = users;
-            _roles = roles;
         }
 
         /// <summary>
@@ -30,14 +28,17 @@ namespace MyShop.Api.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     api\Registration
         ///       {
-        ///        "username" : "testlogin"
-        ///        "password": "Testpass",
+        ///        "username" : "testlogin",
+        ///        "password": "Testpass"
         ///        }
         /// </remarks>
         /// <response code="201">User registered</response> 
         /// <response code="400">Bad request</response> 
+        /// <response code="500">Server error</response> 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost("Registration")]
         public async Task<IActionResult> Registration(ShopUserDTO model)
         {
@@ -77,14 +78,17 @@ namespace MyShop.Api.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     api\Login
         ///       {
-        ///        "username" : "testlogin"
-        ///        "password": "Testpassword",
+        ///        "username" : "testlogin",
+        ///        "password": "Testpass"
         ///        }
         /// </remarks>
         /// <response code="200">New istance of JWT</response> 
         /// <response code="400">Invalid login or password</response> 
+        /// <response code="500">Server error</response> 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost("Login")]
         public async Task<object> Login(ShopUserDTO model)
         {

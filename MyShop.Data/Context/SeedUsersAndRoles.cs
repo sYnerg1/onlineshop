@@ -12,7 +12,7 @@ namespace MyShop.Data.Context
 {
     public static class SeedUsersAndRoles
     {
-        public static async Task SeedAdminUser(ShopContext context, IServiceProvider services)
+        public static async Task SeedRoles(ShopContext context, IServiceProvider services)
         {
             var roleMannger =  services.GetRequiredService<RoleManager<IdentityRole>>();
             string[] roles = {"Admin","User","GoldUser" };
@@ -25,29 +25,27 @@ namespace MyShop.Data.Context
                 {
                    result = await roleMannger.CreateAsync(new IdentityRole(role));
                 }
-            }
-
-            var userManager = services.GetRequiredService<UserManager<ShopUser>>();
-
-            ShopUser admin = new ShopUser()
-            {
-                 UserName="admin"
-            };
-
-            result =  await userManager.CreateAsync(admin, "adminpass");
-
-            result = await userManager.AddToRoleAsync(admin, "Admin");
-
-            ShopUser goldUser = new ShopUser()
-            {
-                UserName = "Bob"
-            };
-
-            result = await userManager.CreateAsync(goldUser, "goldpass");
-
-            result = await userManager.AddToRoleAsync(goldUser, "GoldUser");
+            }   
 
             await  context.SaveChangesAsync();
 ;        }
+
+        public static async Task SeedAdmin(ShopContext context, IServiceProvider services)
+        {
+            var userManager = services.GetRequiredService<UserManager<ShopUser>>();
+
+            if (userManager.FindByNameAsync("admin") == null)
+            {
+                ShopUser admin = new ShopUser()
+                {
+                    UserName = "admin"
+                };
+
+                await userManager.CreateAsync(admin, "adminpass");
+
+                await userManager.AddToRoleAsync(admin, "Admin");
+                await context.SaveChangesAsync();
+            }
+        }
     }
 }

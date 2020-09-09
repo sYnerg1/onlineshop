@@ -23,6 +23,15 @@ namespace MyShop.Api.Controllers
             _orders = orders;
         }
 
+        /// <summary>
+        /// Create order.
+        /// </summary>
+        /// <response code="201">Order created</response> 
+        /// <response code="400">Invalid login or password</response> 
+        /// <response code="500">Server error</response> 
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost("")]
         public async Task<ActionResult> Post()
         {
@@ -44,6 +53,15 @@ namespace MyShop.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Get all orders for person.
+        /// </summary>
+        /// <response code="200">Order list</response> 
+        /// <response code="400">Invalid login or password</response> 
+        /// <response code="500">Server error</response> 
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet("")]
         public async Task<ActionResult> Get()
         {

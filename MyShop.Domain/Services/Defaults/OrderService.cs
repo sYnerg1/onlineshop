@@ -16,18 +16,24 @@ namespace MyShop.Domain.Services.Defaults
         private readonly IOrderRepository _orders;
         private readonly IMapper _mapper;
         private readonly IUserRepository _users;
+        private readonly IDiscountService _discount;
 
-        public OrderService(IOrderRepository orders, IShopCartItemRepository items, IMapper mapper, IUserRepository users)
+        public OrderService(IOrderRepository orders, 
+            IShopCartItemRepository items, 
+            IMapper mapper, 
+            IUserRepository users,
+            IDiscountService discount)
         {
             _orders = orders;
             _items = items;
             _mapper = mapper;
             _users = users;
+            _discount = discount;
         }
 
         public async Task CreateOrderAsync(string userName)
         {
-            var user = await _users.GetUserByUserName(userName);
+            var user = await _users.GetUserByUserName(userName);            
 
             var allItems = await _items.Find(x=>x.ShopCartId == user.ShopCartId);
 
@@ -53,7 +59,11 @@ namespace MyShop.Domain.Services.Defaults
 
             newOrder.TotalCost = allItems.Sum(x=>x.Quantity * x.Product.Price);
 
-           await  _orders.AddOrderAsync(newOrder);
+            var userRoles = await _users.GetUserRoles(user);
+
+            newOrder.TotalCost *= _discount.CalculateDiscount(userRoles);            
+
+            await  _orders.AddOrderAsync(newOrder);
 
            await _items.DeleteRangeAsync(allItems);
         }

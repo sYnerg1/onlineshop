@@ -32,6 +32,7 @@ namespace MyShop.Domain.Services.Defaults
             ShopUser syncaUser = new ShopUser()
             {
                 UserName = user.UserName,
+                ShopCart = new ShopCart()
             };
 
             if (await _users.GetUserByUserName(user.UserName) == null)

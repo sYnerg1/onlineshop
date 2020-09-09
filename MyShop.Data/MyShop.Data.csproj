@@ -7,6 +7,12 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200905084156_Update context 1.cs" />
     <Compile Remove="Migrations\20200905084156_Update context 1.Designer.cs" />
+    <Compile Remove="Migrations\20200908211140_Users seed.cs" />
+    <Compile Remove="Migrations\20200908211140_Users seed.Designer.cs" />
+    <Compile Remove="Migrations\20200908213254_Users seed.cs" />
+    <Compile Remove="Migrations\20200908213254_Users seed.Designer.cs" />
+    <Compile Remove="Migrations\20200908213748_Users seed.cs" />
+    <Compile Remove="Migrations\20200908213748_Users seed.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

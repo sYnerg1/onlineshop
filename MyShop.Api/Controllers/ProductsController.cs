@@ -17,7 +17,7 @@ namespace MyShop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles ="Admin")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _products;
@@ -29,6 +29,14 @@ namespace MyShop.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get Paged list of  products.
+        /// </summary>
+        /// <response code="200">Paged list of  products</response> 
+        /// <response code="500">Server error</response> 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [AllowAnonymous]
         [HttpGet("")]
         public async Task<ActionResult> Get([FromQuery] ProductFilterDTO filter)
         {
@@ -49,15 +57,13 @@ namespace MyShop.Controllers
         /// Add new product.
         /// </summary>
         /// <response code="201">Product added</response> 
-        /// <response code="400">If image is null</response> 
         /// <response code="401">If JWT isn't correct</response> 
         /// <response code="500">Data base error</response> 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost("")]
-        public async Task<ActionResult> Post([FromForm]AddProductDTO productdto)
+        public async Task<ActionResult> Post([FromForm] AddProductDTO productdto)
         {
             try
             {
@@ -71,20 +77,30 @@ namespace MyShop.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Edit product.
+        /// </summary>
+        /// <response code="200">Product edited</response>
+        /// <response code="401">If id doesn't match</response> 
+        /// <response code="401">If JWT isn't correct</response> 
+        /// <response code="500">Data base error</response> 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] AddProductDTO product)
         {
-            if(id!=product.Id)
+            if (id != product.Id)
             {
                 return BadRequest("Id doesn't match");
             }
 
             try
             {
-                 await _products.UpdateAsync(id, product);
+                await _products.UpdateAsync(id, product);
 
-                 return Ok(id);
+                return Ok(id);
 
             }
             catch (Exception ex)

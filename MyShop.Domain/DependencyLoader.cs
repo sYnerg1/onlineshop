@@ -16,6 +16,7 @@ namespace MyShop.Domain
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IShopCartService, ShopCartService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IDiscountService, DiscountService>();
         }
     }
 }

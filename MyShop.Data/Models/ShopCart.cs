@@ -10,9 +10,9 @@ namespace MyShop.Data.Models
     {
         public int Id { get; set; }
 
-        public List<ShopCartItem> Items;
-
         public ShopUser User { get; set; }
+
+        public List<ShopCartItem> Items { get; set; }
 
         public ShopCart()
         {

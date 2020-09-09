@@ -11,14 +11,14 @@
              <remarks>
              Sample request:
             
-                 api\Registration
                    {
-                    "username" : "testlogin"
-                    "password": "Testpass",
+                    "username" : "testlogin",
+                    "password": "Testpass"
                     }
              </remarks>
              <response code="201">User registered</response> 
              <response code="400">Bad request</response> 
+             <response code="500">Server error</response> 
         </member>
         <member name="M:MyShop.Api.Controllers.AccountController.Login(MyShop.Domain.Models.ShopUserDTO)">
              <summary>
@@ -27,21 +27,86 @@
              <remarks>
              Sample request:
             
-                 api\Login
                    {
-                    "username" : "testlogin"
-                    "password": "Testpassword",
+                    "username" : "testlogin",
+                    "password": "Testpass"
                     }
              </remarks>
              <response code="200">New istance of JWT</response> 
              <response code="400">Invalid login or password</response> 
+             <response code="500">Server error</response> 
+        </member>
+        <member name="M:MyShop.Api.Controllers.OrderController.Post">
+            <summary>
+            Create order.
+            </summary>
+            <response code="201">Order created</response> 
+            <response code="400">Invalid login or password</response> 
+            <response code="500">Server error</response> 
+        </member>
+        <member name="M:MyShop.Api.Controllers.OrderController.Get">
+            <summary>
+            Get all orders for person.
+            </summary>
+            <response code="200">Order list</response> 
+            <response code="400">Invalid login or password</response> 
+            <response code="500">Server error</response> 
+        </member>
+        <member name="M:MyShop.Api.Controllers.ShopCartController.Post(System.Int32)">
+            <summary>
+            Add nproduct to shop cart by id.
+            </summary>
+            <response code="201">Product added to shopcart</response> 
+            <response code="401">If JWT isn't correct</response> 
+            <response code="500">Data base error</response> 
+        </member>
+        <member name="M:MyShop.Api.Controllers.ShopCartController.Get">
+            <summary>
+            Add nproduct to shop cart by id.
+            </summary>
+            <response code="201">Product added to shopcart</response> 
+            <response code="401">If JWT isn't correct</response> 
+            <response code="500">Data base error</response> 
+        </member>
+        <member name="M:MyShop.Api.Controllers.ShopCartController.Delete(System.Int32)">
+            <summary>
+            Delete shopcart item by id.
+            </summary>
+            <response code="201">Item deleted</response> 
+            <response code="401">If JWT isn't correct</response> 
+            <response code="500">Data base error</response> 
+        </member>
+        <member name="M:MyShop.Controllers.ProductsController.Get(MyShop.Domain.SearchFilters.ProductFilterDTO)">
+            <summary>
+            Get Paged list of  products.
+            </summary>
+            <response code="200">Paged list of  products</response> 
+            <response code="500">Server error</response> 
         </member>
         <member name="M:MyShop.Controllers.ProductsController.Post(MyShop.Domain.Models.AddProductDTO)">
+             <summary>
+             Add new product.
+             </summary>
+              <remarks>
+             Sample request:
+            
+                   {
+             "name":"Ball",
+              "price":1.12,
+             "amount":10,
+             "description":"Test product"
+            }
+             </remarks>
+             <response code="201">Product added</response> 
+             <response code="401">If JWT isn't correct</response> 
+             <response code="500">Data base error</response> 
+        </member>
+        <member name="M:MyShop.Controllers.ProductsController.Put(System.Int32,MyShop.Domain.Models.AddProductDTO)">
             <summary>
-            Add new product.
+            Edit product.
             </summary>
-            <response code="201">Product added</response> 
-            <response code="400">If image is null</response> 
+            <response code="200">Product edited</response>
+            <response code="401">If id doesn't match</response> 
             <response code="401">If JWT isn't correct</response> 
             <response code="500">Data base error</response> 
         </member>
